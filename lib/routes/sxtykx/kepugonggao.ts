@@ -12,6 +12,11 @@ import { parseDate } from '@/utils/parse-date';
 const baseUrl = 'http://sxtykx.gov.cn';
 const listPath = '/kepugonggao/';
 
+type ArticleMeta = {
+    author?: string;
+    pubDate?: Date;
+};
+
 export const route: Route = {
     path: '/kepugonggao',
     categories: ['government'],
@@ -59,12 +64,22 @@ function makeLinksAbsolute($: CheerioAPI, element: Cheerio<Element>, rootUrl: st
     });
 }
 
+export function extractArticleMeta(infoText: string): ArticleMeta {
+    const author = infoText.match(/来源：\s*(.*?)\s*$/)?.[1]?.trim() || undefined;
+    const pubDateText = infoText.match(/(\d{4}-\d{2}-\d{2}(?:\s+\d{2}:\d{2}:\d{2})?)/)?.[1];
+
+    return {
+        author,
+        pubDate: pubDateText ? parseDate(pubDateText) : undefined,
+    };
+}
+
 async function fetchItem(item: DataItem, listUrl: string): Promise<DataItem> {
     if (!item.link) {
         return item;
     }
 
-    return cache.tryGet(item.link, async () => {
+    return await cache.tryGet(item.link, async () => {
         try {
             const { data: response } = await got(item.link as string, {
                 headers: {
@@ -76,12 +91,11 @@ async function fetchItem(item: DataItem, listUrl: string): Promise<DataItem> {
 
             const $ = load(response);
             const info = $('.artDateTime').first().text();
+            const { author, pubDate } = extractArticleMeta(info);
 
             item.title = $('h1.artTitle').first().text() || item.title;
-            item.author = info.match(/来源：\\s*(.*?)\\s*$/)?.[1] || undefined;
-
-            const pubDate = info.match(/(\\d{4}-\\d{2}-\\d{2}(?:\\s+\\d{2}:\\d{2}:\\d{2})?)/)?.[1];
-            item.pubDate = pubDate ? parseDate(pubDate) : item.pubDate;
+            item.author = author || item.author;
+            item.pubDate = pubDate || item.pubDate;
 
             const content = $('.wz').first();
             if (content.length) {
@@ -129,7 +143,7 @@ async function handler(ctx) {
                 pubDate: item.find('.w2a').first().text() ? parseDate(item.find('.w2a').first().text()) : undefined,
             };
         })
-        .filter((item): item is DataItem => Boolean(item));
+        .filter((item): item is DataItem => item !== null);
 
     const fullItems = await pMap(items, (item) => fetchItem(item, listUrl), { concurrency: 2 });
 

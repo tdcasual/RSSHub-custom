@@ -2484,6 +2484,9 @@ export type RoutePath =
   | `/seu/yjs`
   | `/seu/yzb/:type`
   | `/sfacg/novel/chapter/:id`
+  | `/shanxirst/gwyks/:topic?`
+  | `/shanxirst/sydwks`
+  | `/shanxixiaoxiaotong/notice`
   | `/shcstheatre/programs`
   | `/shiep/:type/:id?`
   | `/shisu/en/:section`
@@ -2658,6 +2661,8 @@ export type RoutePath =
   | `/swpu/dxy/:code`
   | `/swpu/is/:code`
   | `/swpu/scs/:code`
+  | `/sxjyksfw/:tab?`
+  | `/sxtykx/kepugonggao`
   | `/sycl/:feed?`
   | `/syosetu/:ncode`
   | `/syosetu/dev`
@@ -2680,6 +2685,7 @@ export type RoutePath =
   | `/tailwindcss/blog`
   | `/taiwanmobile/rate-plans`
   | `/taiwannews/hot/:lang?`
+  | `/taiyuanjyj/:channel?`
   | `/tangshufang/:category?`
   | `/taobao/mysql/monthly`
   | `/taobao/zhongchou/:type?`

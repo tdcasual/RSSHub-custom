@@ -7619,6 +7619,15 @@
   "/sfacg/novel/chapter/:id": [
     "keocheung"
   ],
+  "/shanxirst/gwyks/:topic?": [
+    "tdcasual"
+  ],
+  "/shanxirst/sydwks": [
+    "tdcasual"
+  ],
+  "/shanxixiaoxiaotong/notice": [
+    "tdcasual"
+  ],
   "/shcstheatre/programs": [
     "fuzy112"
   ],
@@ -8157,6 +8166,12 @@
   "/swpu/scs/:code": [
     "CYTMWIA"
   ],
+  "/sxjyksfw/:tab?": [
+    "tdcasual"
+  ],
+  "/sxtykx/kepugonggao": [
+    "tdcasual"
+  ],
   "/sycl/:feed?": [
     "mocusez"
   ],
@@ -8221,6 +8236,9 @@
   ],
   "/taiwannews/hot/:lang?": [
     "TonyRL"
+  ],
+  "/taiyuanjyj/:channel?": [
+    "tdcasual"
   ],
   "/tangshufang/:category?": [
     "nczitzk"
